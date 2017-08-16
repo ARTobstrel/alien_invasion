@@ -1,8 +1,9 @@
-#!/usr/bin/python3
-import sys
+#!/home/artem/Yandex.Disk/Python/alieninvasion/venv3/bin/python3
 import pygame
 
 from settings import Settings
+from ship import Ship
+import game_functions as gf
 
 def run_game():
     #Инициализирует pygame, settings и объект экрана.
@@ -13,17 +14,13 @@ def run_game():
     )
     pygame.display.set_caption("Alien Invasion")
 
-    #Запуск оновного цикла
+    # Создание корабля
+    ship = Ship(ai_settings, screen)
+
+    # Запуск оновного цикла
     while True:
-        #Отслеживание событий клавиатуры и мыши.
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
-        #При каждом проходе цикла перерисовывается экран.
-        screen.fill(ai_settings.bg_color)
-
-        #Отображение последнего прорисованного экрана.
-        pygame.display.flip()
+        gf.check_events(ship)
+        ship.update()
+        gf.update_screen(ai_settings, screen, ship)
 
 run_game()
