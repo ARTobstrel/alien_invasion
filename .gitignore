@@ -41,3 +41,5 @@ Thumbs.db
 venv3/
 
 *.pyc
+
+__pycache__/
