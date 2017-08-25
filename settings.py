@@ -22,4 +22,4 @@ class Settings():
         self.alien_speed_factor = 1
         self.fleet_drop_speed = 10
         self.fleet_direction = 1 # 1 - движение вправо, -1 - движение влево.
-        self.add_speed = 1 # увеличение скорости нового флота пришельцев
+        self.add_speed = 1 # фактор увеличения скорости нового флота пришельцев
