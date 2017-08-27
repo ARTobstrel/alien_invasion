@@ -10,6 +10,7 @@ class Settings():
 
         # Настройки корабля.
         self.ship_speed_factor = 1.5
+        self.ship_limit = 3
 
         # Параметры пули.
         self.bullet_speed_factor = 4
@@ -19,7 +20,7 @@ class Settings():
         self.bullets_allowed = 3
 
         # Настройки пришельцев
-        self.alien_speed_factor = 1
+        self.alien_speed_factor = 10
         self.fleet_drop_speed = 10
         self.fleet_direction = 1 # 1 - движение вправо, -1 - движение влево.
         self.add_speed = 1 # фактор увеличения скорости нового флота пришельцев

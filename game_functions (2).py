@@ -132,12 +132,12 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
 
     # Проверка коллизий "пришелец-корабль".
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+        print("Ship hit!!!")
 
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
     """Обрабатывает столкновение корабля с пришельцем."""
     # Уменбшение ship_left.
-    stats.ships_left -= 1
+    stats.ship_left -= 1
 
     # Очистка списков пришельцев и пуль.
     aliens.empty()
