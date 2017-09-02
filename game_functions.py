@@ -69,7 +69,7 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
             mouse_x, mouse_y = pygame.mouse.get_pos() # Прлучаем координаты мыши и сохраняем в переменных
             check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
 
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
+def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     """Обновляет изображения на экране и отображает новый экран."""
     # При каждом проходе цикла перерисовывается экран.
     screen.fill(ai_settings.bg_color)
@@ -79,6 +79,9 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
         bullet.draw_bullet()
     ship.blitme()
     aliens.draw(screen)
+
+    # Вывод счета
+    sb.show_score()
 
     # кнопка Play отображается в том случае, если игра неактивна.
     if not stats.game_active:
@@ -108,6 +111,7 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
         # Уничтожение существующих пуль и создание нового флота.
         bullets.empty()
         ai_settings.increase_speed()
+        sleep(1)
         create_fleet(ai_settings, screen, ship, aliens)
 
 def get_number_aliens_x(ai_settings, alien_width):
