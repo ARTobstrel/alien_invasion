@@ -1,4 +1,6 @@
 import pygame.font
+from pygame.sprite import Group
+from ship import Ship
 
 class Scoreboard():
     """Класс для вывода игровой информации."""
@@ -11,11 +13,12 @@ class Scoreboard():
 
         # Настройки шрифта для вывода счета.
         self.text_color = (30, 30, 30)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.SysFont(None, 28)
         # Подготовка исходного изображения.
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
+        self.prep_ships()
 
     def prep_score(self):
         """Преобразует текущий счет в графическое изображение."""
@@ -32,7 +35,7 @@ class Scoreboard():
         """Преобразует рекордный счет в графическое изображение."""
         high_score = int(round(self.stats.high_score, -1))
         high_score_str = "{:,}".format(high_score)
-        self.high_score_image = self.font.render(high_score_str, True, self.text_color, self.ai_settings.bg_color)
+        self.high_score_image = self.font.render("HIGH SCORE " + high_score_str, True, self.text_color, self.ai_settings.bg_color)
 
         # Рекорд выравнивается по центру верхней стороны.
         self.high_score_rect = self.high_score_image.get_rect()
@@ -44,6 +47,8 @@ class Scoreboard():
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+        # Вывод кораблей.
+        self.ships.draw(self.screen)
 
     def prep_level(self):
         """Преобразует уровень в графическое изображение."""
@@ -52,4 +57,13 @@ class Scoreboard():
         # Уровень выводится под текущим счетом.
         self.level_rect = self.level_image.get_rect()
         self.level_rect.right = self.score_rect.right
-        self.level_rect_top = self.score_rect.bottom + 10
+        self.level_rect_bottom = self.score_rect.bottom + 10
+
+    def prep_ships(self):
+        """Сообщает количество оставшихся кораблей."""
+        self.ships = Group()
+        for ship_number in range(self.stats.ships_left):
+            ship = Ship(self.ai_settings, self.screen)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.rect.y = 10
+            self.ships.add(ship)
