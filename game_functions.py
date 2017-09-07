@@ -1,6 +1,7 @@
 # Модуль для хранения функций
 
 import sys
+import pickle
 from time import sleep
 import pygame
 from bullet import Bullet
@@ -17,6 +18,7 @@ def check_keydown_events(event, ai_settings, screen, stats, sb, ship, aliens, bu
     elif event.key == pygame.K_p and not stats.game_active:
         start_game(ai_settings, screen, stats, sb, ship, aliens, bullets)
     elif event.key == pygame.K_q:
+        save_high_score(stats)
         sys.exit()
 
 def fire_bullet(ai_settings, screen, ship, bullets):
@@ -67,6 +69,7 @@ def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bull
     """Обрабатывает нажатие клавиш и события миши."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save_high_score(stats)
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             check_keydown_events(event, ai_settings, screen, stats, sb, ship, aliens, bullets)
@@ -177,7 +180,7 @@ def change_fleet_direction(ai_settings, aliens):
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
 
-def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
+def update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets):
     """Проверяет, достиг ди флот края экрана. Обновляет позиции всех пришельцев во флоте."""
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
@@ -224,3 +227,27 @@ def check_high_score(stats, sb):
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+
+def load_high_score(stats):
+    """загружаем файл с данными о рекордном счете,
+    в случае если файл отсутствует, создаём новый файл и помещаем в него данные с нулевым рекордом"""
+    try:
+        f = open("highscore.db", 'rb')
+    except FileNotFoundError:
+        f = open("highscore.db", 'wb')  # создаем пустой файл
+        pickle.dump(stats.high_score, f)  # помещаем наш нулевой рекорд в файл
+    except Exception:
+        print('101: Возникла непредвиденная ошибка при чтении файла словаря. Обратитесь к разработчику программы')
+    else:
+        stats.high_score = pickle.load(f)  # достаем данные из файла
+    finally:
+        f.close()
+
+def save_high_score(stats):
+    try:
+        f = open("highscore.db", 'wb')
+    except Exception:
+        print('102: Возникла непредвиденная ошибка при записи в файл. Обратитесь к разработчику программы')
+    else:
+        pickle.dump(stats.high_score, f)
+        f.close()

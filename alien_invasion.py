@@ -27,6 +27,9 @@ def run_game():
     # Создание экземпляра Scoreboard.
     sb = Scoreboard(ai_settings, screen, stats)
 
+    # Загрузка рекордного счета
+    gf.load_high_score(stats)
+
     # Создание корабля, группы пуль и группы пришельцев.
     ship = Ship(ai_settings, screen)
     bullets = Group()
